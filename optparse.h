@@ -143,7 +143,7 @@ optparse_init(struct optparse *options, char **argv)
 {
     options->argv = argv;
     options->permute = 1;
-    options->optind = 1;
+    options->optind = argv[0] != 0;
     options->subopt = 0;
     options->optarg = 0;
     options->errmsg[0] = '\0';
@@ -286,7 +286,7 @@ optparse_from_long(const struct optparse_long *longopts, char *optstring)
     char *p = optstring;
     int i;
     for (i = 0; !optparse_longopts_end(longopts, i); i++) {
-        if (longopts[i].shortname) {
+        if (longopts[i].shortname && longopts[i].shortname < 127) {
             int a;
             *p++ = longopts[i].shortname;
             for (a = 0; a < (int)longopts[i].argtype; a++)
